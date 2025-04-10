@@ -18,7 +18,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
 
     @Override
     public boolean addArtwork(Artwork artwork) {
-        String sql = "INSERT INTO Artwork (Title, Description, CreationDate, Medium, ImageURL, ArtistID) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = HexaConstants.INSERT_ARTWORK;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, artwork.getTitle());
             ps.setString(2, artwork.getDescription());
@@ -36,7 +36,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
 
     @Override
     public boolean updateArtwork(Artwork artwork) {
-        String sql = "UPDATE Artwork SET Title = ?, Description = ?, CreationDate = ?, Medium = ?, ImageURL = ?, ArtistID = ? WHERE ArtworkID = ?";
+        String sql = HexaConstants.UPDATE_ARTWORK;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, artwork.getTitle());
             ps.setString(2, artwork.getDescription());
@@ -55,7 +55,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
 
     @Override
     public boolean removeArtwork(int artworkId) {
-        String sql = "DELETE FROM Artwork WHERE ArtworkID = ?";
+        String sql = HexaConstants.DELETE_ARTWORK;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, artworkId);
             return ps.executeUpdate() > 0;
@@ -67,7 +67,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
 
     @Override
     public Artwork getArtworkById(int artworkId) throws ArtWorkNotFoundException{
-        String sql = "SELECT * FROM Artwork WHERE ArtworkID = ?";
+        String sql = HexaConstants.GET_ARTWORK_BY_ID;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, artworkId);
             ResultSet rs = ps.executeQuery();
@@ -92,7 +92,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
     @Override
     public List<Artwork> searchArtworks(String keyword) {
         List<Artwork> artworks = new ArrayList<>();
-        String sql = "SELECT * FROM Artwork WHERE Title LIKE ? OR Description LIKE ?";
+        String sql = HexaConstants.SEARCH_ARTWORKS;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             String likeKeyword = "%" + keyword + "%";
             ps.setString(1, likeKeyword);
@@ -118,7 +118,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
 
     @Override
     public boolean addArtworkToFavorite(int userId, int artworkId) {
-        String sql = "INSERT INTO User_Favorite_Artwork (UserID, ArtworkID) VALUES (?, ?)";
+        String sql = HexaConstants.INSERT_FAVORITE_ARTWORK;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.setInt(2, artworkId);
@@ -131,7 +131,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
 
     @Override
     public boolean removeArtworkFromFavorite(int userId, int artworkId) {
-        String sql = "DELETE FROM User_Favorite_Artwork WHERE UserID = ? AND ArtworkID = ?";
+        String sql = HexaConstants.DELETE_FAVORITE_ARTWORK;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.setInt(2, artworkId);
@@ -145,7 +145,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
     @Override
     public List<Artwork> getUserFavoriteArtworks(int userId) throws UserNotFoundException {
         List<Artwork> favorites = new ArrayList<>();
-        String sql = "SELECT a.* FROM Artwork a INNER JOIN User_Favorite_Artwork ufa ON a.ArtworkID = ufa.ArtworkID WHERE ufa.UserID = ?";
+        String sql = HexaConstants.GET_USER_FAVORITE_ARTWORKS;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
@@ -169,7 +169,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
 
     @Override
     public boolean addGallery(Gallery gallery) {
-        String query = "INSERT INTO Gallery (Name, Description, Location, CuratorID, OpeningHours) VALUES (?, ?, ?, ?, ?)";
+        String query = HexaConstants.INSERT_GALLERY;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, gallery.getName());
             ps.setString(2, gallery.getDescription());
@@ -186,7 +186,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
 
     @Override
     public boolean updateGallery(Gallery gallery) {
-        String query = "UPDATE Gallery SET Name=?, Description=?, Location=?, CuratorID=?, OpeningHours=? WHERE GalleryID=?";
+        String query = HexaConstants.UPDATE_GALLERY;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, gallery.getName());
             ps.setString(2, gallery.getDescription());
@@ -204,7 +204,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
 
     @Override
     public boolean removeGallery(int galleryId) {
-        String query = "DELETE FROM Gallery WHERE GalleryID=?";
+        String query = HexaConstants.DELETE_GALLERY;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, galleryId);
             int rows = ps.executeUpdate();
@@ -218,7 +218,7 @@ public class VirtualArtGalleryDAOImpl implements IVirtualArtGallery {
     @Override
     public List<Gallery> searchGalleries(String keyword) {
         List<Gallery> galleries = new ArrayList<>();
-        String query = "SELECT * FROM Gallery WHERE Name LIKE ? OR Description LIKE ?";
+        String query = HexaConstants.SEARCH_GALLERIES;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, "%" + keyword + "%");
             ps.setString(2, "%" + keyword + "%");
