@@ -9,21 +9,22 @@ public class Artwork {
     private Date creationDate;
     private String medium;
     private String imageUrl;
-    private int artistId;
+    private Artist artist; 
 
     public Artwork() {}
 
     public Artwork(int artworkId, String title, String description, Date creationDate,
-                   String medium, String imageUrl, int artistId) {
+                   String medium, String imageUrl, Artist artist) {
         this.artworkId = artworkId;
         this.title = title;
         this.description = description;
         this.creationDate = creationDate;
         this.medium = medium;
         this.imageUrl = imageUrl;
-        this.artistId = artistId;
+        this.artist = artist;
     }
 
+    // Getters and Setters
     public int getArtworkId() {
         return artworkId;
     }
@@ -72,18 +73,23 @@ public class Artwork {
         this.imageUrl = imageUrl;
     }
 
-    public int getArtistId() {
-        return artistId;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setArtistId(int artistId) {
-        this.artistId = artistId;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     @Override
     public String toString() {
-        return "Artwork [artworkId=" + artworkId + ", title=" + title + ", description=" + description +
-                ", creationDate=" + creationDate + ", medium=" + medium + ", imageUrl=" + imageUrl +
-                ", artistId=" + artistId + "]";
+        return "Artwork [artworkId=" + artworkId +
+                ", title=" + title +
+                ", description=" + description +
+                ", creationDate=" + creationDate +
+                ", medium=" + medium +
+                ", imageUrl=" + imageUrl +
+                ", artist=" + artist +
+                "]";
     }
 }

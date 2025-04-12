@@ -5,21 +5,22 @@ public class Gallery {
     private String name;
     private String description;
     private String location;
-    private int curatorId;
+    private Artist curator; 
     private String openingHours;
 
     public Gallery() {}
 
     public Gallery(int galleryId, String name, String description, String location,
-                   int curatorId, String openingHours) {
+                   Artist curator, String openingHours) {
         this.galleryId = galleryId;
         this.name = name;
         this.description = description;
         this.location = location;
-        this.curatorId = curatorId;
+        this.curator = curator;
         this.openingHours = openingHours;
     }
 
+    // Getters and Setters
     public int getGalleryId() {
         return galleryId;
     }
@@ -52,12 +53,12 @@ public class Gallery {
         this.location = location;
     }
 
-    public int getCuratorId() {
-        return curatorId;
+    public Artist getCurator() {
+        return curator;
     }
 
-    public void setCuratorId(int curatorId) {
-        this.curatorId = curatorId;
+    public void setCurator(Artist curator) {
+        this.curator = curator;
     }
 
     public String getOpeningHours() {
@@ -70,7 +71,11 @@ public class Gallery {
 
     @Override
     public String toString() {
-        return "Gallery [galleryId=" + galleryId + ", name=" + name + ", description=" + description +
-                ", location=" + location + ", curatorId=" + curatorId + ", openingHours=" + openingHours + "]";
+        return "Gallery [galleryId=" + galleryId +
+                ", name=" + name +
+                ", description=" + description +
+                ", location=" + location +
+                ", curator=" + curator +
+                ", openingHours=" + openingHours + "]";
     }
 }

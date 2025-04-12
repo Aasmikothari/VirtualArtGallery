@@ -19,14 +19,15 @@ public class VirtualArtGalleryDAOImplTest {
     public static void setUp() {
         service = new VirtualArtGalleryDAOImpl();
 
-        // Insert test artist once before tests run
         Artist artist = new Artist(0, "Test Artist", "Sample bio", Date.valueOf("1970-01-01"), "Testland", "http://testartist.com", "test@test.com");
         service.addArtist(artist);
     }
 
     @Test
     public void testAddArtwork() {
-        Artwork artwork = new Artwork(0, "Test Title", "Test Desc", new Date(System.currentTimeMillis()), "Oil", "url.jpg", 1);
+        Artist artworkArtist = new Artist(1, "Test Artist", "Sample bio", Date.valueOf("1970-01-01"), "Testland", "http://testartist.com", "test@test.com");
+
+        Artwork artwork = new Artwork(0, "Test Title", "Test Desc", new Date(System.currentTimeMillis()), "Oil", "url.jpg", artworkArtist);
         boolean result = service.addArtwork(artwork);
         assertTrue(result);
     }
@@ -34,17 +35,15 @@ public class VirtualArtGalleryDAOImplTest {
     @Test
     public void testUpdateArtwork() {
         Date creationDate = Date.valueOf("1503-10-01");
-        // Add original artwork
-        Artwork original = new Artwork(0, "Mona Lisa", "Original description", creationDate, "Oil", "https://original.img", 1);
+        Artist artworkArtist = new Artist(1, "Test Artist", "Sample bio", Date.valueOf("1970-01-01"), "Testland", "http://testartist.com", "test@test.com");
+        Artwork original = new Artwork(0, "Mona Lisa", "Original description", creationDate, "Oil", "https://original.img", artworkArtist);
         service.addArtwork(original);
 
-        // Get the auto-generated ID
         List<Artwork> found = service.searchArtworks("Mona Lisa");
         assertFalse(found.isEmpty());
         int idToUpdate = found.get(0).getArtworkId();
 
-        // Update it
-        Artwork updatedArtwork = new Artwork(idToUpdate, "Mona Lisa (Updated)", "Updated description", creationDate, "Oil on canvas", "https://updatedmonalisa.img", 1);
+        Artwork updatedArtwork = new Artwork(idToUpdate, "Mona Lisa (Updated)", "Updated description", creationDate, "Oil on canvas", "https://updatedmonalisa.img", artworkArtist);
         boolean result = service.updateArtwork(updatedArtwork);
         assertTrue(result);
     }
@@ -52,7 +51,8 @@ public class VirtualArtGalleryDAOImplTest {
     @Test
     public void testRemoveArtwork() {
         Date creationDate = Date.valueOf("1503-10-01");
-        Artwork artwork = new Artwork(0, "ToDelete", "To be deleted", creationDate, "Ink", "https://temp.img", 1);
+        Artist artworkArtist = new Artist(1, "Test Artist", "Sample bio", Date.valueOf("1970-01-01"), "Testland", "http://testartist.com", "test@test.com");
+        Artwork artwork = new Artwork(0, "ToDelete", "To be deleted", creationDate, "Ink", "https://temp.img", artworkArtist);
         service.addArtwork(artwork);
 
         // Get the inserted artwork ID
@@ -70,38 +70,37 @@ public class VirtualArtGalleryDAOImplTest {
         assertNotNull(artworks);
         assertTrue(artworks.size() >= 0);
     }
-    
+
     @Test
     public void testAddGallery() {
-        Gallery gallery = new Gallery(0, "Modern Art Space", "A test gallery", "New York", 1, "10AM - 6PM");
+        Artist curator = new Artist(1, "Test Curator", "Curator bio", Date.valueOf("1970-01-01"), "CuratorLand", "http://curator.com", "curator@test.com");
+
+        Gallery gallery = new Gallery(0, "Modern Art Space", "A test gallery", "New York", curator, "10AM - 6PM");
         boolean result = service.addGallery(gallery);
         assertTrue(result);
     }
 
     @Test
     public void testUpdateGallery() {
-        // Add gallery first
-        Gallery original = new Gallery(0, "Old Gallery", "Old Desc", "Paris", 1, "9AM - 5PM");
+        Artist curator = new Artist(1, "Test Curator", "Curator bio", Date.valueOf("1970-01-01"), "CuratorLand", "http://curator.com", "curator@test.com");
+        Gallery original = new Gallery(0, "Old Gallery", "Old Desc", "Paris", curator, "9AM - 5PM");
         service.addGallery(original);
 
-        // Search to get generated ID
         List<Gallery> found = service.searchGalleries("Old Gallery");
         assertFalse(found.isEmpty());
         int galleryId = found.get(0).getGalleryId();
 
-        // Update details
-        Gallery updated = new Gallery(galleryId, "Updated Gallery", "New Desc", "Paris", 1, "11AM - 7PM");
+        Gallery updated = new Gallery(galleryId, "Updated Gallery", "New Desc", "Paris", curator, "11AM - 7PM");
         boolean result = service.updateGallery(updated);
         assertTrue(result);
     }
 
     @Test
     public void testRemoveGallery() {
-        // Add gallery first
-        Gallery gallery = new Gallery(0, "Temp Gallery", "To be removed", "Berlin", 1, "10AM - 4PM");
+        Artist curator = new Artist(1, "Test Curator", "Curator bio", Date.valueOf("1970-01-01"), "CuratorLand", "http://curator.com", "curator@test.com");
+        Gallery gallery = new Gallery(0, "Temp Gallery", "To be removed", "Berlin", curator, "10AM - 4PM");
         service.addGallery(gallery);
 
-        // Search to get ID
         List<Gallery> found = service.searchGalleries("Temp Gallery");
         assertFalse(found.isEmpty());
         int idToRemove = found.get(0).getGalleryId();
@@ -116,5 +115,4 @@ public class VirtualArtGalleryDAOImplTest {
         assertNotNull(galleries);
         assertTrue(galleries.size() >= 0);
     }
-
 }

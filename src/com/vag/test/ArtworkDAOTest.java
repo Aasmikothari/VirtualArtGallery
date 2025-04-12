@@ -15,19 +15,20 @@ import java.util.List;
 public class ArtworkDAOTest {
 
     static VirtualArtGalleryDAOImpl service;
+    static Artist testArtist;
 
     @BeforeAll
     public static void setUp() {
         service = new VirtualArtGalleryDAOImpl();
 
-        // Add a test artist once (assumes artistID = 1 will be generated)
-        Artist artist = new Artist(0, "Test Artist", "Sample bio", Date.valueOf("1970-01-01"), "Testland", "http://testartist.com", "test@test.com");
-        service.addArtist(artist);
+        // Add a test artist once
+        testArtist = new Artist(1, "Test Artist", "Sample bio", Date.valueOf("1970-01-01"), "Testland", "http://testartist.com", "test@test.com");
+        service.addArtist(testArtist);
     }
 
     @Test
     public void testAddArtwork() {
-        Artwork artwork = new Artwork(0, "Test Title", "Test Desc", new Date(System.currentTimeMillis()), "Oil", "url.jpg", 1);
+        Artwork artwork = new Artwork(0, "Test Title", "Test Desc", new Date(System.currentTimeMillis()), "Oil", "url.jpg", testArtist);
         boolean result = service.addArtwork(artwork);
         assertTrue(result);
     }
@@ -35,14 +36,14 @@ public class ArtworkDAOTest {
     @Test
     public void testUpdateArtwork() {
         Date creationDate = Date.valueOf("1503-10-01");
-        Artwork original = new Artwork(0, "Mona Lisa", "Original description", creationDate, "Oil", "https://original.img", 1);
+        Artwork original = new Artwork(0, "Mona Lisa", "Original description", creationDate, "Oil", "https://original.img", testArtist);
         service.addArtwork(original);
 
         List<Artwork> found = service.searchArtworks("Mona Lisa");
         assertFalse(found.isEmpty());
         int idToUpdate = found.get(0).getArtworkId();
 
-        Artwork updatedArtwork = new Artwork(idToUpdate, "Mona Lisa (Updated)", "Updated description", creationDate, "Oil on canvas", "https://updatedmonalisa.img", 1);
+        Artwork updatedArtwork = new Artwork(idToUpdate, "Mona Lisa (Updated)", "Updated description", creationDate, "Oil on canvas", "https://updatedmonalisa.img", testArtist);
         boolean result = service.updateArtwork(updatedArtwork);
         assertTrue(result);
     }
@@ -50,7 +51,7 @@ public class ArtworkDAOTest {
     @Test
     public void testRemoveArtwork() {
         Date creationDate = Date.valueOf("1503-10-01");
-        Artwork artwork = new Artwork(0, "ToDelete", "To be deleted", creationDate, "Ink", "https://temp.img", 1);
+        Artwork artwork = new Artwork(0, "ToDelete", "To be deleted", creationDate, "Ink", "https://temp.img", testArtist);
         service.addArtwork(artwork);
 
         List<Artwork> found = service.searchArtworks("ToDelete");

@@ -14,6 +14,10 @@ public class MainModule {
         Scanner sc = new Scanner(System.in);
         int choice;
 
+        // Add a sample artist for gallery curator and artwork artist
+        Artist testArtist = new Artist(1, "Test Artist", "Sample biography", Date.valueOf("1980-01-01"), "Country", "http://artist.com", "artist@test.com");
+        service.addArtist(testArtist);
+
         do {
             System.out.println("\n===== VIRTUAL ART GALLERY MENU =====");
             System.out.println("1. Add Artwork");
@@ -42,10 +46,13 @@ public class MainModule {
                     String medium = sc.nextLine();
                     System.out.print("Image URL: ");
                     String imageUrl = sc.nextLine();
-                    System.out.print("Artist ID: ");
+                    System.out.print("Artist ID (for artwork artist): ");
                     int artistId = Integer.parseInt(sc.nextLine());
 
-                    Artwork newArtwork = new Artwork(0, title, description, creationDate, medium, imageUrl, artistId);
+                    // Retrieve the artist object by ID
+                    Artist artworkArtist = new Artist(artistId, "Test Artist", "Sample biography", Date.valueOf("1980-01-01"), "Country", "http://artist.com", "artist@test.com");
+
+                    Artwork newArtwork = new Artwork(0, title, description, creationDate, medium, imageUrl, artworkArtist);
                     if (service.addArtwork(newArtwork)) {
                         System.out.println("Artwork added successfully!");
                     } else {
@@ -66,10 +73,13 @@ public class MainModule {
                     String upMedium = sc.nextLine();
                     System.out.print("New Image URL: ");
                     String upImg = sc.nextLine();
-                    System.out.print("New Artist ID: ");
+                    System.out.print("New Artist ID (for artwork artist): ");
                     int upArtistId = Integer.parseInt(sc.nextLine());
 
-                    Artwork upArtwork = new Artwork(upId, upTitle, upDesc, upDate, upMedium, upImg, upArtistId);
+                    // Retrieve the artist object by ID
+                    Artist upArtworkArtist = new Artist(upArtistId, "Test Artist", "Sample biography", Date.valueOf("1980-01-01"), "Country", "http://artist.com", "artist@test.com");
+
+                    Artwork upArtwork = new Artwork(upId, upTitle, upDesc, upDate, upMedium, upImg, upArtworkArtist);
                     if (service.updateArtwork(upArtwork)) {
                         System.out.println("Artwork updated.");
                     } else {
@@ -116,12 +126,16 @@ public class MainModule {
                     String gDesc = sc.nextLine();
                     System.out.print("Location: ");
                     String gLoc = sc.nextLine();
-                    System.out.print("Curator ID: ");
+                    System.out.print("Curator ID (for gallery curator): ");
                     int curatorId = Integer.parseInt(sc.nextLine());
+
+                    // Retrieve the artist object by ID for curator
+                    Artist curator = new Artist(curatorId, "Test Curator", "Curator biography", Date.valueOf("1970-01-01"), "CuratorLand", "http://curator.com", "curator@test.com");
+
                     System.out.print("Opening Hours: ");
                     String hours = sc.nextLine();
 
-                    Gallery newGallery = new Gallery(0, gName, gDesc, gLoc, curatorId, hours);
+                    Gallery newGallery = new Gallery(0, gName, gDesc, gLoc, curator, hours);
                     if (service.addGallery(newGallery)) {
                         System.out.println("Gallery added.");
                     } else {
@@ -138,12 +152,16 @@ public class MainModule {
                     String upGDesc = sc.nextLine();
                     System.out.print("New Location: ");
                     String upGLoc = sc.nextLine();
-                    System.out.print("New Curator ID: ");
+                    System.out.print("New Curator ID (for gallery curator): ");
                     int upCurator = Integer.parseInt(sc.nextLine());
+
+                    // Retrieve the artist object by ID for curator
+                    Artist upCuratorArtist = new Artist(upCurator, "Test Curator", "Curator biography", Date.valueOf("1970-01-01"), "CuratorLand", "http://curator.com", "curator@test.com");
+
                     System.out.print("New Opening Hours: ");
                     String upHours = sc.nextLine();
 
-                    Gallery upGallery = new Gallery(gId, upGName, upGDesc, upGLoc, upCurator, upHours);
+                    Gallery upGallery = new Gallery(gId, upGName, upGDesc, upGLoc, upCuratorArtist, upHours);
                     if (service.updateGallery(upGallery)) {
                         System.out.println("Gallery updated.");
                     } else {
